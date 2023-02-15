@@ -16,6 +16,7 @@
     </form>
 
     <?php
+   $db = new mysqli("localhost","root","","post");
     //sprawdź czy został wysłany formularz
     if(isset($_POST['submit'])) 
     {
@@ -70,7 +71,12 @@
 
 
         echo "Plik został poprawnie wgrany na serwer";
+        $dateTime = date("Y-m-d H:i:s" );
+        $sql = "INSERT INTO post(timestamp, filename) VALUE('$dateTime','$newFileName')";
+        $db->query($sql);
+        $db->close();
     }
+
     ?>
 </body>
 </html>
