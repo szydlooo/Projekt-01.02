@@ -42,8 +42,8 @@
         /// niepotrzebne - generujemy webp
 
         //wygeneruj hash - nową nazwę pliku
-        $newFileName = hash("sha256", $sourceFileName) . hrtime(true)
-                            . ".webp";
+        $hash = hash("sha256", $sourceFileName . hrtime(true));
+        $newFileName = $hash . ".webp";
 
         //zaczytujemy cały obraz z folderu tymczasowego do stringa
         $imageString = file_get_contents($tempURL);
@@ -72,7 +72,8 @@
 
         echo "Plik został poprawnie wgrany na serwer";
         $dateTime = date("Y-m-d H:i:s" );
-        $sql = "INSERT INTO post(timestamp, filename) VALUE('$dateTime','$newFileName')";
+        $sql = "INSERT INTO post (timestamp, filename) VALUE ('$dateTime', '$hash')";
+        echo "Plik został pomyślnie wgrany na serwer";
         $db->query($sql);
         $db->close();
     }
