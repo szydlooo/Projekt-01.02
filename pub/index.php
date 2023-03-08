@@ -4,12 +4,18 @@ use Steampixel\Route;
 Route::add('/', function() {
     //strona wyświetlająca obrazki
     global $twig;
-    $twig->display("index.html.twig");
+    //pobierz 10 najnowszych postów
+    $postArray = Post::getPage();
+    $twigData = array("postArray" => $postArray,
+                        "pageTitle" => "Strona główna");
+    $twig->display("index.html.twig", $twigData);
 });
+
 Route::add('/upload', function() {
     //strona z formularzem do wgrywania obrazków
     global $twig;
-    $twig->display("upload.html.twig");
+    $twigData = array("pageTitle" => "Wgraj mema");
+    $twig->display("upload.html.twig", $twigData);
 });
 
 Route::add('/upload', function() {
@@ -19,8 +25,8 @@ Route::add('/upload', function() {
     if(isset($_POST['submit']))  {
         Post::upload($_FILES['uploadedFile']['tmp_name']);
     }
-    $twig->display("index.html.twig");
+    //TODO: zmienić na ścieżkę względną
+    header("Location: http://localhost/zadanie0102/pub");
 }, 'post');
-
 Route::run('/zadanie0102/pub');
 ?>
