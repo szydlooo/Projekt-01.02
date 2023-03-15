@@ -3,12 +3,14 @@ class Post {
     private int $ID;
     private string $FileName;
     private string $TimeStamp;
+    private string $Tytuł;
     
-    function __construct(int $i, string $f, string $t)
+    function __construct(int $i, string $f, string $t, string $Y)
     {
         $this->ID = $i;
         $this->FileName = $f;
         $this->TimeStamp = $t;
+        $this->Tytuł =$Y;
     }
 
     public function getFilename() : string {
@@ -17,6 +19,10 @@ class Post {
     public function getTimestamp() : string {
         return $this->TimeStamp;
     }
+    public function getTytuł() : string{
+        return $this->Tytuł;
+    }
+
 
     //funkcja zwraca ostatnio dodany obrazek
     static function getLast() : Post {
@@ -31,7 +37,7 @@ class Post {
         //przetwarzanie na tablicę asocjacyjną - bez pętli bo będzie tylko jeden
         $row = $result->fetch_assoc();
         //tworzenie obiektu
-        $p = new Post($row['id'], $row['filename'], $row['timestamp']);
+        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['tytuł']);
         //zwracanie obiektu
         return $p; 
     }
@@ -53,12 +59,13 @@ class Post {
         $postsArray = array();
         //pobieraj wiersz po wierszu jako tablicę asocjacyjną indeksowaną nazwami kolumn z mysql
         while($row = $result->fetch_assoc()) {
-            $post = new Post($row['ID'],$row['FileName'],$row['TimeStamp']);
+            $post = new Post($row['ID'],$row['FileName'],$row['TimeStamp'],$row['Tytuł']);
             array_push($postsArray, $post);
         }
         return $postsArray;
     }
     static function upload(string $tempFileName) {
+        $Tytuł=$_POST['tytul'];
         //deklarujemy folder do którego będą zaczytywane obrazy
         $targetDir = "img/";
         //sprawdź czy mamy do czynienia z obrazem
@@ -88,11 +95,11 @@ class Post {
         //użyj globalnego połączenia
         global $db;
         //stwórz kwerendę
-        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?)");
+        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?)");
         //przygotuj znacznik czasu dla bazy danych
         $dbTimestamp = date("Y-m-d H:i:s");
         //zapisz dane do bazy
-        $query->bind_param("ss", $dbTimestamp, $newFileName);
+        $query->bind_param("sss", $dbTimestamp, $newFileName, $Tytuł);
         if(!$query->execute())
             die("Błąd zapisu do bazy danych");
     }

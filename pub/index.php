@@ -17,10 +17,7 @@ Route::add('/upload', function() {
     $twigData = array("pageTitle" => "Wgraj mema");
     $twig->display("upload.html.twig", $twigData);
 });
-
 Route::add('/upload', function() {
-    //wywoła się tylko po otrzymaniu danych metodą post na ten url
-    // (po wypełnieniu formularza)
     global $twig;
     if(isset($_POST['submit']))  {
         Post::upload($_FILES['uploadedFile']['tmp_name']);
