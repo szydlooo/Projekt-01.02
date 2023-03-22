@@ -1,5 +1,7 @@
 <?php
 require_once('./../src/config.php');
+session_start();
+
 use Steampixel\Route;
 Route::add('/', function() {
     //strona wyświetlająca obrazki
@@ -8,6 +10,8 @@ Route::add('/', function() {
     $postArray = Post::getPage();
     $twigData = array("postArray" => $postArray,
                         "pageTitle" => "Strona główna");
+                        if(isset($_SESSION['user']))
+                    $twigData['user']=
     $twig->display("index.html.twig", $twigData);
 });
 
