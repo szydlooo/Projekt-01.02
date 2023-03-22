@@ -25,5 +25,18 @@ Route::add('/upload', function() {
     //TODO: zmienić na ścieżkę względną
     header("Location: http://localhost/zadanie0102/pub");
 }, 'post');
+Route::add('/register', function() {
+    global $twig;
+    $twigData = array("pageTitle" => "Zarejestruj użytkownika");
+    $twig->display("register.html.twig", $twigData);
+});
+
+Route::add('/register', function(){
+    global $twig;
+    if(isset($_POST['submit'])) {
+        User::register($_POST['email'], $_POST['password']);
+        header("Location: http://localhost/zadanie0102/pub");
+    }
+}, 'post');
 Route::run('/zadanie0102/pub');
 ?>
