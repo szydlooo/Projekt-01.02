@@ -1,7 +1,6 @@
 <?php
 require_once('./../src/config.php');
 session_start();
-
 use Steampixel\Route;
 Route::add('/', function() {
     //strona wyświetlająca obrazki
@@ -37,7 +36,6 @@ Route::add('/register', function() {
     $twigData = array("pageTitle" => "Zarejestruj użytkownika");
     $twig->display("register.html.twig", $twigData);
 });
-
 Route::add('/register', function(){
     global $twig;
     if(isset($_POST['submit'])) {
