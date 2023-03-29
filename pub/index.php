@@ -11,20 +11,23 @@ Route::add('/', function() {
     $twigData = array("postArray" => $postArray,
                         "pageTitle" => "Strona główna");
                         if(isset($_SESSION['user']))
-                    $twigData['user']=
-    $twig->display("index.html.twig", $twigData);
-});
+                        $twigData['user'] = $_SESSION['user'];
+                    $twig->display("index.html.twig", $twigData);
+                });
 
 Route::add('/upload', function() {
     //strona z formularzem do wgrywania obrazków
     global $twig;
     $twigData = array("pageTitle" => "Wgraj mema");
+    //jeśli użytkownik jest zalogowany to przekaż go do twiga
+    if(isset($_SESSION['user']))
+        $twigData['user'] = $_SESSION['user'];
     $twig->display("upload.html.twig", $twigData);
 });
 Route::add('/upload', function() {
     global $twig;
     if(isset($_POST['submit']))  {
-        Post::upload($_FILES['uploadedFile']['tmp_name']);
+        Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title'], $_POST['userId']);
     }
     //TODO: zmienić na ścieżkę względną
     header("Location: http://localhost/zadanie0102/pub");
@@ -41,6 +44,21 @@ Route::add('/register', function(){
         User::register($_POST['email'], $_POST['password']);
         header("Location: http://localhost/zadanie0102/pub");
     }
+}, 'post');
+
+Route::add('/login', function(){
+    global $twig;
+    $twigData = array("pageTitle" => "Zaloguj użytkownika");
+    $twig->display("login.html.twig", $twigData);
+});
+
+Route::add('/login', function() {
+    global $twig;
+    if(isset($_POST['submit'])) {
+        User::login($_POST['email'], $_POST['password']);
+    }
+    header("Location: http://localhost/zadanie0102/pub");
+
 }, 'post');
 Route::run('/zadanie0102/pub');
 ?>

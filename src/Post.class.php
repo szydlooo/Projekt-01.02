@@ -4,13 +4,18 @@ class Post {
     private string $FileName;
     private string $TimeStamp;
     private string $Tytuł;
+    private int $authorId;
+    private string $authorName;
     
-    function __construct(int $i, string $f, string $t, string $Y)
+    function __construct(int $i, string $f, string $t, string $Y, int $authorId)
     {
         $this->ID = $i;
         $this->FileName = $f;
         $this->TimeStamp = $t;
         $this->Tytuł =$Y;
+        $this->authorId = $authorId;
+        global $db;
+        $this->authorName = User::getNameById($this->authorId);
     }
 
     public function getFilename() : string {
@@ -21,6 +26,9 @@ class Post {
     }
     public function getTytuł() : string{
         return $this->Tytuł;
+    }
+    public function getAuthorName() : string {
+        return $this->authorName;
     }
 
 
@@ -37,7 +45,7 @@ class Post {
         //przetwarzanie na tablicę asocjacyjną - bez pętli bo będzie tylko jeden
         $row = $result->fetch_assoc();
         //tworzenie obiektu
-        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['tytuł']);
+        $p = new Post($row['id'], $row['filename'], $row['timestamp'], $row['tytuł'], $row['userId']);
         //zwracanie obiektu
         return $p; 
     }
@@ -59,12 +67,12 @@ class Post {
         $postsArray = array();
         //pobieraj wiersz po wierszu jako tablicę asocjacyjną indeksowaną nazwami kolumn z mysql
         while($row = $result->fetch_assoc()) {
-            $post = new Post($row['ID'],$row['FileName'],$row['TimeStamp'],$row['Tytuł']);
+            $post = new Post($row['ID'],$row['FileName'],$row['TimeStamp'],$row['Tytuł'], $row['userId']);
             array_push($postsArray, $post);
         }
         return $postsArray;
     }
-    static function upload(string $tempFileName) {
+    static function upload(string $tempFileName, string $title, int $userId) {
         $Tytuł=$_POST['tytul'];
         //deklarujemy folder do którego będą zaczytywane obrazy
         $targetDir = "img/";
@@ -95,11 +103,11 @@ class Post {
         //użyj globalnego połączenia
         global $db;
         //stwórz kwerendę
-        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?)");
+        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?,?)");
         //przygotuj znacznik czasu dla bazy danych
         $dbTimestamp = date("Y-m-d H:i:s");
         //zapisz dane do bazy
-        $query->bind_param("sss", $dbTimestamp, $newFileName, $Tytuł);
+        $query->bind_param("sssi", $dbTimestamp, $newFileName, $Tytuł, $userId);
         if(!$query->execute())
             die("Błąd zapisu do bazy danych");
     }
