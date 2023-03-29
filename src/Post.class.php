@@ -17,7 +17,9 @@ class Post {
         global $db;
         $this->authorName = User::getNameById($this->userId);
     }
-
+    public function getId() : int {
+        return $this->ID;
+    }
     public function getFilename() : string {
         return $this->FileName;
     }
@@ -54,7 +56,7 @@ class Post {
         //połączenie z bazą
         global $db;
         //kwerenda
-        $query = $db->prepare("SELECT * FROM post ORDER BY timestamp DESC LIMIT ? OFFSET ?");
+        $query = $db->prepare("SELECT * FROM post WHERE removed = 0 ORDER BY timestamp DESC LIMIT ? OFFSET ?");
         //oblicz przesunięcie - numer strony * ilość zdjęć na stronie
         $offset = ($pageNumber-1)*$postsPerPage;
         //podstaw do kwerendy
@@ -102,7 +104,7 @@ class Post {
         //użyj globalnego połączenia
         global $db;
         //stwórz kwerendę
-        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?,?)");
+        $query = $db->prepare("INSERT INTO post VALUES(NULL, ?, ?, ?,?, 0)");
         //przygotuj znacznik czasu dla bazy danych
         $dbTimestamp = date("Y-m-d H:i:s");
         //zapisz dane do bazy
@@ -110,5 +112,14 @@ class Post {
         if(!$query->execute())
             die("Błąd zapisu do bazy danych");
     }
+    public static function remove($id) : bool {
+        global $db;
+        $query = $db->prepare("UPDATE post SET removed = 1 WHERE id = ?");
+        $query->bind_param("i", $id);
+        return $query->execute();
+    }
+}
+
+?>
 }
 ?>
