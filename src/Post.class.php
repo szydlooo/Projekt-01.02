@@ -4,18 +4,18 @@ class Post {
     private string $FileName;
     private string $TimeStamp;
     private string $Tytuł;
-    private int $authorId;
+    private int $userId;
     private string $authorName;
     
-    function __construct(int $i, string $f, string $t, string $Y, int $authorId)
+    function __construct(int $i, string $f, string $t, string $Y, int $userId)
     {
         $this->ID = $i;
         $this->FileName = $f;
         $this->TimeStamp = $t;
         $this->Tytuł =$Y;
-        $this->authorId = $authorId;
+        $this->userId = $userId;
         global $db;
-        $this->authorName = User::getNameById($this->authorId);
+        $this->authorName = User::getNameById($this->userId);
     }
 
     public function getFilename() : string {
@@ -72,8 +72,7 @@ class Post {
         }
         return $postsArray;
     }
-    static function upload(string $tempFileName, string $title, int $userId) {
-        $Tytuł=$_POST['tytul'];
+    static function upload(string $tempFileName, string $Tytuł, int $userId) {
         //deklarujemy folder do którego będą zaczytywane obrazy
         $targetDir = "img/";
         //sprawdź czy mamy do czynienia z obrazem
