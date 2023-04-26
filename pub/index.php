@@ -53,7 +53,6 @@ Route::add('/upload', function() {
     if(isset($_POST['submit']))  {
         Post::upload($_FILES['uploadedFile']['tmp_name'], $_POST['title'], $_POST['userId']);
     }
-    //TODO: zmienić na ścieżkę względną
     header("Location: http://localhost/zadanie0102/pub");
 }, 'post');
 Route::add('/register', function() {
