@@ -1,3 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="http://localhost/zadanie0102/pub/" class="active">Strona główna</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/upload">Wgraj mema</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/admin">Panel admina</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/login">Zaloguj się</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/register">Zarejestruj się</a></li>
+        </ul>
+    </nav>
 {% include 'header.html.twig' %}
 <div id="pageContainer">
     <h1>{{pageTitle}}</h1>
@@ -7,22 +26,23 @@
     {% endif %}
     {% for post in postArray %}
     <div id="post">
-        <h2>{{ post.getTytuł() }} </h2>
+        <h2 id="info">{{ post.getTytuł() }} </h2>
         <img src="{{ post.getFilename() }}">
-        <h6>Autor: {{post.getAuthorName() }}</h6>
-        <h6>Data dodania: {{ post.getTimestamp() }} </h6>
-        <h6>Ilość polubień: {{post.getLikeCount()}}</h6>
+        <h6 id="info">Autor: {{post.getAuthorName() }}</h6>
+        <h6 id="info">Data dodania: {{ post.getTimestamp() }} </h6>
+        <h6 id="info">Ilość polubień: {{post.getLikeCount()}}</h6>
+        <div class="guzik">
     <form action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="postID" value="{{ post.getID }}">
         <input type="hidden" name="userID" value="{{ user.getID }}">
-        <button type="submit" name="like">+</button>
+        <button type="submit" name="like" class="plus">↑</button>
     </form>
     <form action="" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="postID" value="{{ post.getID }}">
         <input type="hidden" name="userID" value="{{ user.getID }}">
-        <button type="submit" name="dislike">-</button>
+        <button type="submit" name="dislike" class="minus">↓</button>
     </form>
-
+        </div>
 
 </div>
 {% endfor %}  

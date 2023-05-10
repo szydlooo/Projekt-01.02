@@ -8,7 +8,7 @@ Route::add('/', function() {
     //pobierz 10 najnowszych postów
     $postArray = Post::getPage();
     $twigData = array("postArray" => $postArray,
-                        "pageTitle" => "Strona główna");
+                        "pageTitle" => "OGGDO BOGDO MEMY");
                         if(isset($_SESSION['user']))
                         $twigData['user'] = $_SESSION['user'];
                     $twig->display("index.html.twig", $twigData);
@@ -64,7 +64,7 @@ Route::add('/register', function(){
     global $twig;
     if(isset($_POST['submit'])) {
         User::register($_POST['email'], $_POST['password']);
-        header("Location: http://localhost/zadanie0102/pub");
+        header("Location: http://localhost/zadanie0102/pub/login");
     }
 }, 'post');
 

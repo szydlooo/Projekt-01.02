@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="http://localhost/zadanie0102/pub/">Strona główna</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/upload">Wgraj mema</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/admin">Panel admina</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/login" class="active">Zaloguj się</a></li>
+            <li><a href="http://localhost/zadanie0102/pub/register">Zarejestruj się</a></li>
+        </ul>
+    </nav>
+<body>
 {% include 'header.html.twig' %}
 <div id="pageContainer">
     <h1>{{ pageTitle|default("Brak tytułu podstrony")}}</h1>
